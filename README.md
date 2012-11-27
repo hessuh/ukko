@@ -86,6 +86,7 @@ Now let us run the batch file:
 This should finish fairly quickly. You will see 500 lines of
 output. The results of the computation will be stored in
 `~/tmp/example`, and you will also find the log file there.
+If something goes wrong, study the log file.
 
 
 Notes
