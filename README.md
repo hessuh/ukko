@@ -79,7 +79,7 @@ Run the following command:
 It should finish soon, print one line of output, and also store the
 result in the file ~/tmp/example/result-1.
 
-Now let us run the batch file:
+Now let us run the batch file, using all nodes with load at most 4:
 
     parallel --sshloginfile tmp/ukko/loginfile-4 --joblog tmp/example/joblog < tmp/example/batch
 
