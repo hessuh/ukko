@@ -1,0 +1,28 @@
+#!/usr/bin/python
+
+# This does not do anything useful: it just wastes a random
+# amount of time to produce a random result.
+
+import os
+import random
+import sys
+
+i = int(sys.argv[1])
+
+DIR = os.path.expanduser('~/tmp/example')
+resultfile = os.path.join(DIR, "result-%u" % i)
+
+random.seed(i)
+j = 0
+K = 9
+L1 = range(K)
+L2 = range(K)
+while True:
+    random.shuffle(L1)
+    j += 1
+    if L1 == L2:
+        break
+
+print "%u: %u" % (i, j)
+with open(resultfile, 'w') as f:
+    f.write('%u\n' % j)

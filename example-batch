@@ -1,0 +1,18 @@
+#!/usr/bin/python
+
+import os
+
+TOOL = 'ukko/example-compute'
+N = 500
+
+DIR = os.path.expanduser('~/tmp/example')
+batchfile = os.path.join(DIR, 'batch')
+
+if not os.path.exists(DIR):
+    os.makedirs(DIR)
+
+with open(batchfile, 'w') as f:
+    for i in range(N):
+        f.write("%s %u\n" % (TOOL, i))
+
+print 'Created: %s' % batchfile
