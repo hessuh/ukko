@@ -31,9 +31,6 @@ Recommended setup:
 
   - Then we will run Gnu Parallel on the master node.
 
-Now you can safely disconnect the SSH connection between your own
-computer and melkinkari.
-
 Preliminaries:
 
   - Make sure that `hpcssh` is in your path.
