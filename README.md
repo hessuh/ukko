@@ -43,9 +43,9 @@ Preliminaries:
     without entering a password. For example, this should work as
     expected:
 
-    username@ukko030:~$ hpcssh ukko031.hpc.cs.helsinki.fi hostname
-    ukko031
-    username@ukko030:~$ 
+        username@ukko030:~$ hpcssh ukko031.hpc.cs.helsinki.fi hostname
+        ukko031
+        username@ukko030:~$
   
 Run `ukko-update` to make sure the login file is up-to-date.
 
