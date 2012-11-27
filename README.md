@@ -56,11 +56,10 @@ In this example, we would like to run the command `example-compute`
 with a large number of different command line parameters.
 
 We will assume that you have cloned this Git repository to
-`~/ukko`.
+`~/ukko`, and your current working directory is `~`.
 
 First, run the following command to create a batch file:
 
-    cd ~
     ukko/example-batch
 
 Now you should have a batch file in `~/tmp/example/batch`. There
