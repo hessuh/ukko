@@ -91,3 +91,11 @@ This should finish fairly quickly. You will see 500 lines of
 output. The results of the computation will be stored in
 `~/tmp/example`, and you will also find the log file there.
 
+
+Notes
+-----
+
+If you follow the above procedure, there will be only one process
+running on each node simultaneously.
+
+Use, for example, OpenMP to benefit from multiple cores.
