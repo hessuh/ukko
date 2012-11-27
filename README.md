@@ -18,7 +18,7 @@ files as follows:
 
     parallel --sshloginfile LOGINFILE --joblog LOGFILE < BATCHFILE
 
-where
+Here:
 
   - LOGINFILE: for example, ~/tmp/ukko/loginfile-2
   - LOGFILE: where to store the log file
