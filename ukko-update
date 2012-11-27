@@ -1,0 +1,104 @@
+#!/usr/bin/python
+
+import os
+import re
+import sys
+import time
+import urllib2
+
+HOSTS = 240
+LOADLIMIT = 17
+URL = 'http://www.cs.helsinki.fi/ukko/hpc-report.txt'
+DIR = os.path.expanduser('~/tmp/ukko')
+
+WHAT = [
+    ('loginfile', '1/hpcssh '),
+    ('hostfile', ''),
+]
+
+ENTRY = re.compile(r'''
+    ^(ukko[0-9]+\.hpc\.cs\.helsinki\.fi) \s+
+    ([0-9]+) \s+  # slot
+    (yes|no) \s+  # ping
+    (yes|no) \s+  # ssh
+    ([0-9]+) \s+  # users
+    (?:([0-9]+\.[0-9]+)|-) \s+  # load
+    (cs|rr|ok)(?:/t)? \s+  # stat
+    (?:(\d+)\s*W|N/A) \s+  # power
+    (?:(\d+.\d+)\s*C|N/A) \s+  # temp
+    ([0-9.]+|--) \s*  # BIOS
+    (.*?) \s* $
+''', re.X)
+
+TIMESTAMP = 'Generated at '
+TIME_FORMAT = '%a %b %d %H:%M:%S %Z %Y'
+
+print
+print "Reading %s:" % URL,
+f = urllib2.urlopen(URL)
+
+hosts = 0
+available = 0
+working = 0
+byload = [ [] for i in range(LOADLIMIT + 1) ]
+
+for l in f:
+    if l.startswith(TIMESTAMP):
+        timestamp = l[len(TIMESTAMP):].strip()
+        timestamp = time.mktime(time.strptime(timestamp, TIME_FORMAT))
+        timediff = int(round(time.time() - timestamp))
+        print "%d s old" % timediff
+        continue
+    m = ENTRY.match(l)
+    if m is not None:
+        host, slot, ping, ssh, users, load, stat, power, temp, bios, comment = m.groups()
+        hosts += 1
+        if stat != 'cs':
+            continue
+        available += 1
+        if ping != 'yes' or ssh != 'yes' or load is None:
+            continue
+        if 'Old Cubbli' in comment:
+            continue
+        working += 1
+        loadb = int(round(float(load)))
+        loadb = min(loadb, LOADLIMIT)
+        byload[loadb].append(host)
+
+print
+print "%u hosts, %u available, %u working" % (hosts, available, working)
+print
+
+print "load: ",
+for i in range(LOADLIMIT):
+    print "%3u" % i,
+print "  +"
+print "hosts:",
+for i in range(LOADLIMIT+1):
+    print "%3u" % len(byload[i]),
+print
+print
+
+if hosts != HOSTS:
+    sys.exit("Expected %u hosts, try again later." % HOSTS)
+
+if not os.path.exists(DIR):
+    os.makedirs(DIR)
+    
+for i in range(LOADLIMIT+1):
+    if i == LOADLIMIT:
+        suffix = "all"
+    else:
+        suffix = "%u" % i
+    for fileprefix, lineprefix in WHAT:
+        filename1 = "%s-%s" % (fileprefix, suffix)
+        filename2 = filename1 + ".new"
+        path1 = os.path.join(DIR, filename1)
+        path2 = os.path.join(DIR, filename2)
+        with open(path2, 'w') as f:
+            for j in range(i+1):
+                for host in byload[j]:
+                    f.write(lineprefix)
+                    f.write(host)
+                    f.write('\n')
+        os.rename(path2, path1)
