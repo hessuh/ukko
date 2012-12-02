@@ -95,4 +95,4 @@ Notes
 If you follow the above procedure, there will be only one process
 running on each node simultaneously.
 
-Use, for example, OpenMP to benefit from multiple cores.
+Use, for example, OpenMP or `make -j` to benefit from multiple cores.
