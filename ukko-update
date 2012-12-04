@@ -90,6 +90,12 @@ print "hosts:",
 for i in range(LOADLIMIT+1):
     print "%3u" % len(byload[i]),
 print
+print "total:",
+c = 0
+for i in range(LOADLIMIT+1):
+    c += len(byload[i])
+    print "%3u" % c,
+print
 print
 
 if hosts != HOSTS:
