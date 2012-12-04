@@ -39,7 +39,6 @@ if os.path.exists(BLACKLIST):
     with open(BLACKLIST) as f:
         for l in f:
             l = l.strip()
-            print l
             blacklist.add(l)
 
 print
