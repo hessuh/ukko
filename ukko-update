@@ -10,6 +10,7 @@ HOSTS = 240
 LOADLIMIT = 17
 URL = 'http://www.cs.helsinki.fi/ukko/hpc-report.txt'
 DIR = os.path.expanduser('~/tmp/ukko')
+BLACKLIST = os.path.join(DIR, "blacklist")
 
 WHAT = [
     ('loginfile', '1/hpcssh '),
@@ -33,6 +34,14 @@ ENTRY = re.compile(r'''
 TIMESTAMP = 'Generated at '
 TIME_FORMAT = '%a %b %d %H:%M:%S %Z %Y'
 
+blacklist = set()
+if os.path.exists(BLACKLIST):
+    with open(BLACKLIST) as f:
+        for l in f:
+            l = l.strip()
+            print l
+            blacklist.add(l)
+
 print
 print "Reading %s:" % URL,
 f = urllib2.urlopen(URL)
@@ -40,6 +49,7 @@ f = urllib2.urlopen(URL)
 hosts = 0
 available = 0
 working = 0
+blacklisted = 0
 byload = [ [] for i in range(LOADLIMIT + 1) ]
 
 for l in f:
@@ -61,12 +71,15 @@ for l in f:
         if 'Old Cubbli' in comment:
             continue
         working += 1
+        if host in blacklist:
+            blacklisted += 1
+            continue
         loadb = int(round(float(load)))
         loadb = min(loadb, LOADLIMIT)
         byload[loadb].append(host)
 
 print
-print "%u hosts, %u available, %u working" % (hosts, available, working)
+print "%u hosts, %u available, %u working, %u blacklisted" % (hosts, available, working, blacklisted)
 print
 
 print "load: ",
