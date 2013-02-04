@@ -6,7 +6,7 @@ import sys
 import time
 import urllib2
 
-HOSTS = 240
+HOSTS = 192
 LOADLIMIT = 17
 URL = 'http://www.cs.helsinki.fi/ukko/hpc-report.txt'
 DIR = os.path.expanduser('~/tmp/ukko')
