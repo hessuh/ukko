@@ -25,8 +25,7 @@ ENTRY = re.compile(r'''
     ([0-9]+) \s+  # users
     (?:([0-9]+\.[0-9]+)|-) \s+  # load
     (cs|rr|ok)(?:/t)? \s+  # stat
-    (?:(\d+)\s*W|N/A) \s+  # power
-    (?:(\d+.\d+)\s*C|N/A) \s+  # temp
+    (N/A|[0-9.-]+-(?:generic|server))? \s+  # kernel
     ([0-9.]+|--) \s*  # BIOS
     (.*?) \s* $
 ''', re.X)
@@ -60,7 +59,7 @@ for l in f:
         continue
     m = ENTRY.match(l)
     if m is not None:
-        host, slot, ping, ssh, users, load, stat, power, temp, bios, comment = m.groups()
+        host, slot, ping, ssh, users, load, stat, kernel, bios, comment = m.groups()
         hosts += 1
         if stat != 'cs':
             continue
