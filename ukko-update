@@ -61,7 +61,7 @@ for l in f:
     if m is not None:
         host, slot, ping, ssh, users, load, stat, kernel, bios, comment = m.groups()
         hosts += 1
-        if stat != 'cs':
+        if stat not in ('cs', 'ok'):
             continue
         available += 1
         if ping != 'yes' or ssh != 'yes' or load is None:
